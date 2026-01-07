@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    /* Базовые настройки */
+    "target": "ES2022", // Современная Node.js поддерживает ES2022 (top-level await и т.д.)
+    "module": "CommonJS", // Для Express/Node чаще всего используется CommonJS
+    "lib": ["ES2022"], // Указываем, какие библиотеки типов встроены в среду
+
+    /* Структура проекта */
+    "rootDir": "./src", // Где лежит исходный код
+    "outDir": "./dist", // Куда компилировать
+    "removeComments": true, // Убирает комментарии для уменьшения размера файлов
+
+    /* Строгость (Маст-хэв) */
+    "strict": true, // Включает все проверки типов сразу
+    "noImplicitAny": true, // Запрещает неявный тип any
+    "strictNullChecks": true, // Защищает от ошибок "cannot read property of undefined"
+
+    /* Совместимость и поиск модулей */
+    "moduleResolution": "node",
+    "esModuleInterop": true, // Важно: позволяет делать `import express from 'express'`
+    "forceConsistentCasingInFileNames": true, // Защищает от ошибок в разных ОС (Windows vs Linux)
+
+    /* Оптимизация */
+    "skipLibCheck": true, // Не проверять типы внутри node_modules (ускоряет сборку)
+    "sourceMap": true, // Позволяет дебажить TS код прямо в VS Code/Chrome
+
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/**/*"], // Что компилировать
+  "exclude": ["node_modules", "**/*.test.ts"] // Что игнорировать
+}
