@@ -1,15 +1,21 @@
-# Auth Service NodeJS
+# Auth Service (Node.js)
 
-Микросервис аутентификации на основе Node.js, Express и PostgreSQL. Реализует современную схему работы с **Access** и **Refresh** токенами, а также ротацию токенов для обеспечения безопасности.
+Сервис аутентификации на **Node.js + Express + PostgreSQL**.
+Реализует регистрацию и аутентификацию пользователей с использованием **Access / Refresh JWT**, включая ротацию refresh-токенов.
 
-## Технологии
+Проект подходит как учебный backend, так и как основа для микросервисной архитектуры.
 
-- **Backend:** Node.js, Express
-- **Language:** TypeScript
-- **Database:** PostgreSQL (pg)
-- **Security:** JWT (jsonwebtoken), bcrypt
-- **Validation:** Zod
-- **Documentation:** Swagger UI
+---
+
+## Стек технологий
+
+- **Node.js**, **Express**
+- **TypeScript**
+- **PostgreSQL** (`pg`)
+- **JWT** (`jsonwebtoken`)
+- **bcrypt**
+- **Zod** — валидация данных
+- **Swagger UI** — документация API
 
 ---
 
@@ -18,78 +24,84 @@
 ### 1. Клонирование репозитория
 
 ```bash
-git clone <url-вашего-репозитория>
+git clone https://github.com/mednik83/authservicenodejs.git
 cd authservicenodejs
 ```
 
-````
+---
 
 ### 2. Установка зависимостей
 
 ```bash
 npm install
-
 ```
+
+---
 
 ### 3. Настройка окружения
 
-Создайте файл `.env` в корне проекта и заполните его:
+Создай файл `.env` в корне проекта:
 
 ```env
 PORT=3000
 
-# JWT Secrets
-JWT_ACCESS_SECRET=ваш_секрет_для_access
-JWT_REFRESH_SECRET=ваш_секрет_для_refresh
+# JWT
+JWT_ACCESS_SECRET=your_access_secret
+JWT_REFRESH_SECRET=your_refresh_secret
 
 # Database
-DB_USER=
-DB_PASSWORD=
+DB_USER=postgres
+DB_PASSWORD=password
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=auth_db
-
 ```
+
+---
 
 ### 4. Запуск проекта
 
-**Режим разработки (с hot-reload):**
+#### Режим разработки (hot-reload)
 
 ```bash
 npm run dev
-
 ```
 
-**Сборка и запуск в production:**
+#### Production-сборка
 
 ```bash
 npm run build
 npm run start
-
 ```
 
 ---
 
 ## Скрипты
 
-- `npm run dev` — запуск сервера для разработки через `ts-node-dev`.
-- `npm run build` — компиляция TypeScript в JavaScript (директория `dist`).
-- `npm run lint` — проверка кода линтером (запрещены `console.log` и неиспользуемые переменные).
-- `npm run format` — автоматическое форматирование кода через Prettier.
+| Команда          | Описание                   |
+| ---------------- | -------------------------- |
+| `npm run dev`    | Запуск в режиме разработки |
+| `npm run build`  | Сборка TypeScript в `dist` |
+| `npm run start`  | Запуск production-версии   |
+| `npm run lint`   | Проверка кода ESLint       |
+| `npm run format` | Форматирование Prettier    |
 
 ---
 
-## API Эндпоинты
+## API
 
-Документация доступна по адресу: `http://localhost:3000/api-docs`
+Swagger-документация доступна по адресу:
 
-| Метод | Эндпоинт         | Описание                                 |
-| ----- | ---------------- | ---------------------------------------- |
-| POST  | `/auth/register` | Регистрация нового пользователя          |
-| POST  | `/auth/login`    | Вход и получение пары токенов            |
-| POST  | `/auth/refresh`  | Обновление Access токена через Refresh   |
-| GET   | `/auth/me`       | Получение профиля (требует Bearer токен) |
-| GET   | `/auth/verify`   | Проверка валидности текущего сеанса      |
+```
+http://localhost:3000/api-docs
+```
 
+### Основные эндпоинты
 
-````
+| Метод | URL              | Описание                        |
+| ----- | ---------------- | ------------------------------- |
+| POST  | `/auth/register` | Регистрация пользователя        |
+| POST  | `/auth/login`    | Аутентификация и выдача токенов |
+| POST  | `/auth/refresh`  | Обновление Access токена        |
+| GET   | `/auth/me`       | Получение данных пользователя   |
+| GET   | `/auth/verify`   | Проверка валидности токена      |
