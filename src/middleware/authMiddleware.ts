@@ -1,18 +1,19 @@
-import { Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import { NextFunction } from "express";
+import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { AuthRequest, UserPublicData } from "../models/User";
 import { config } from "../config/env";
+import { ApiError } from "../errors/apiError";
 
 export const authMiddleware = (
   req: AuthRequest,
-  res: Response,
+  _res: unknown,
   next: NextFunction
 ) => {
   const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(" ")[1];
+  const token = authHeader?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ message: "Unauthorized" });
+    throw ApiError.unauthorized();
   }
 
   try {
@@ -20,12 +21,18 @@ export const authMiddleware = (
       token,
       config.jwt.accessSecret
     ) as UserPublicData;
+
     req.user = {
       id: decoded.id,
       email: decoded.email,
     };
+
     next();
-  } catch {
-    return res.status(403).json({ message: "Invalid token" });
+  } catch (error) {
+    if (error instanceof JsonWebTokenError) {
+      throw ApiError.forbidden("Invalid or expired token");
+    }
+
+    throw error;
   }
 };
